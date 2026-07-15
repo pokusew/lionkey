@@ -91,6 +91,7 @@ See also the [scripts section in package.json](./package.json#L6).
 
 [Node.js]: https://nodejs.org/en/
 [npm]: https://www.npmjs.com/
+[Node.js Development Setup guide]: https://lionkey.dev/docs/development/nodejs
 [TypeScript]: https://www.typescriptlang.org/
 [ESLint]: https://eslint.org/
 [Prettier]: https://prettier.io/
