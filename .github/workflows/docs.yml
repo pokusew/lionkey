@@ -31,6 +31,12 @@ on:
       CLOUDFLARE_API_TOKEN:
         required: false
 
+# We set default permissions (all to none) for all jobs in this workflow
+# to adhere to the principle of least privilege,
+# and we grant only the necessary permissions at the job level.
+# docs: https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#defining-access-for-the-github_token-scopes
+permissions: {}
+
 env:
   # TODO: forces colorized output in Node.js scripts, better solution?
   # see https://nodejs.org/api/cli.html#force_color1-2-3
@@ -56,19 +62,22 @@ jobs:
       fail-fast: false
       matrix:
         os: [ ubuntu-latest ]
-        node-version: [ 20.x ]
+        node-version: [ 24.x ]
 
     runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
 
     steps:
       # https://github.com/actions/checkout
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Use Node.js ${{ matrix.node-version }}
         # https://github.com/actions/setup-node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: ${{ matrix.node-version }}
+          package-manager-cache: false
           # consider built-in cache feature
           # see https://github.com/actions/setup-node/blob/main/docs/advanced-usage.md#caching-packages-data
 
@@ -79,7 +88,7 @@ jobs:
         run: echo "dir=$(npm config get cache)" >> ${GITHUB_OUTPUT}
       - name: Cache npm cache
         # https://github.com/actions/cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         id: npm-cache # use this to check for `cache-hit` ==> if: steps.npm-cache.outputs.cache-hit != 'true'
         with:
           path: ${{ steps.npm-cache-dir.outputs.dir }}
@@ -108,7 +117,7 @@ jobs:
       - name: Store checks results
         if: always() && steps.install.outcome == 'success'
         # https://github.com/actions/upload-artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: checks-results
           path: |
@@ -122,7 +131,7 @@ jobs:
       - name: Store build
         if: always() && steps.build.outcome == 'success'
         # https://github.com/actions/upload-artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: website-build
           path: |
@@ -140,7 +149,7 @@ jobs:
       - name: Store deployment bundle
         if: always() && steps.deploy.outcome == 'success'
         # https://github.com/actions/upload-artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: deployment-bundle
           path: |

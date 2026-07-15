@@ -17,6 +17,12 @@ on:
       - 'CMakeLists.txt'
       - 'CMakePresets.json'
 
+# We set default permissions (all to none) for all jobs in this workflow
+# to adhere to the principle of least privilege,
+# and we grant only the necessary permissions at the job level.
+# docs: https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#defining-access-for-the-github_token-scopes
+permissions: {}
+
 defaults:
   # https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
   run:
@@ -38,18 +44,20 @@ jobs:
         preset: [ stm32h533-debug, stm32h533-debug-info-logs, stm32h533-release ]
 
     runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout
         # https://github.com/actions/checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           submodules: 'recursive'
 
       # Python currently not needed
       # - name: Setup Python
       #   # https://github.com/actions/setup-python
-      #   uses: actions/setup-python@v5
+      #   uses: actions/setup-python@v6
       #   with:
       #     python-version: '3.x'
 
@@ -75,7 +83,7 @@ jobs:
       - name: Upload build outputs
         if: always()
         # https://github.com/actions/upload-artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: build-outputs-${{ matrix.os }}-${{ matrix.preset }}
           path: |
@@ -95,11 +103,13 @@ jobs:
         preset: [ host-debug ]
 
     runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout
         # https://github.com/actions/checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           submodules: 'recursive'
 
@@ -126,7 +136,7 @@ jobs:
       - name: Upload test outputs
         if: always()
         # https://github.com/actions/upload-artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: test-outputs-${{ matrix.os }}-${{ matrix.preset }}
           path: |

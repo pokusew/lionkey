@@ -23,10 +23,18 @@ on:
         default: false
         type: boolean
 
+# We set default permissions (all to none) for all jobs in this workflow
+# to adhere to the principle of least privilege,
+# and we grant only the necessary permissions at the job level.
+# docs: https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#defining-access-for-the-github_token-scopes
+permissions: {}
+
 jobs:
   deploy:
     name: Deploy
     uses: ./.github/workflows/docs.yml
+    permissions:
+      contents: read
     secrets: inherit
     with:
       deployment: true
