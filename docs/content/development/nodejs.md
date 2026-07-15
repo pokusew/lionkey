@@ -21,7 +21,7 @@ For other options and systems (e.g., **Windows**), please refer to the official 
    cd ~/
    git clone https://github.com/nvm-sh/nvm.git .nvm
    cd ~/.nvm
-   git checkout v0.40.3
+   git checkout v0.40.5
    ```
 
 2. Add the following at the end of your `~/.bashrc`:
@@ -36,19 +36,19 @@ For other options and systems (e.g., **Windows**), please refer to the official 
    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
    ```
 
-3. Restart your terminal. Verify nvm works (should print something like `0.39.7`):
+3. Restart your terminal. Verify nvm works (should print something like `0.40.5`):
 
    ```bash
    nvm -v
    ```
 
-4. Install the latest Node.js 20:
+4. Install the latest Node.js 24:
 
    ```bash
-   nvm install 20.*
+   nvm install 24.*
    ```
 
-5. Verify Node.js is installed and active (should print something like `v20.19.2`):
+5. Verify Node.js is installed and active (should print something like `v24.18.0`):
 
    ```bash
    node -v
