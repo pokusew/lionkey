@@ -10,7 +10,7 @@ The content is written in Markdown.
 
 ### Requirements
 
-- [Node.js] >=20
+- [Node.js] >=24
 - [npm] (comes with Node.js)
 - You can follow our [Node.js Development Setup guide].
 
